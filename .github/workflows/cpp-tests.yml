@@ -1,0 +1,36 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ "master", "main" ]
+  pull_request:
+    branches: [ "master", "main" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    env:
+      COVERAGE_DATA_PATH: coverage.info
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Tests with Coverage
+        uses: arduino/cpp-test-action@v1
+        with:
+          source-path: .
+          build-path: build
+          runtime-paths: |
+            - build/mpu6050_test
+          coverage-data-path: ${{ github.workspace }}/${{ env.COVERAGE_DATA_PATH }}
+          coverage-exclude-paths: |
+            - '*/tests/*'
+            - '/usr/*'
+
+      # Optional: upload a coverage report to codecov.io
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ${{ env.COVERAGE_DATA_PATH }}
