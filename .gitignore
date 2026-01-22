@@ -3,3 +3,15 @@
 
 # Firmware binaries
 examples/**/build/
+
+# CMake build directories
+/cmake-build-*/
+/cmake-build-debug/
+/cmake-build-debug-coverage/
+
+# Coverage and profile data
+*.profraw
+/coverage/
+
+# IDE specific files (optional but recommended for CLion/JetBrains)
+.idea/
